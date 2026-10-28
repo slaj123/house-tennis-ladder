@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+:root {
+  --chalk: #f7f5ee;
+  --paper: #ffffff;
+  --ink: #1a1a1a;
+  --muted: #5c5a55;
+  --line: #dcd8cc;
+  --grass: #0f4d2c;
+  --grass-stripe: #13583a;
+  --on-grass: #ffffff;
+  --plum: #582c83;
+  --plum-deep: #45216a;
+  --gold: #c9a646;
+  --win: #1f6b3e;
+  --loss: #a3322b;
+  --tile: #0a3a21;
+  --on-tile: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --chalk: #0c1510;
+    --paper: #13201a;
+    --ink: #eeede6;
+    --muted: #a6a398;
+    --line: #26352c;
+    --grass: #0f4d2c;
+    --grass-stripe: #13583a;
+    --plum: #7a4cb0;
+    --plum-deep: #6a3fa0;
+    --win: #6fbf8e;
+    --loss: #e07a6e;
+    --tile: #06200f;
+  }
+}
+
+@theme inline {
+  --color-chalk: var(--chalk);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-grass: var(--grass);
+  --color-on-grass: var(--on-grass);
+  --color-plum: var(--plum);
+  --color-plum-deep: var(--plum-deep);
+  --color-gold: var(--gold);
+  --color-win: var(--win);
+  --color-loss: var(--loss);
+  --color-tile: var(--tile);
+  --color-on-tile: var(--on-tile);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-instrument);
+  --font-mono: var(--font-jetbrains);
+}
+
+body {
+  background: var(--chalk);
+  color: var(--ink);
+  font-family: var(--font-instrument), system-ui, sans-serif;
+}
+
+/* Freshly mown lawn: alternating light/dark stripes behind the header. */
+.mown-grass {
+  background-color: var(--grass);
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--grass) 0 56px,
+    var(--grass-stripe) 56px 112px
+  );
+}
+
+/* Centre Court scoreboard tile: a hairline split across the middle of each digit. */
+.flip-tile {
+  position: relative;
+  background: var(--tile);
+  color: var(--on-tile);
+}
+.flip-tile::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgb(0 0 0 / 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
