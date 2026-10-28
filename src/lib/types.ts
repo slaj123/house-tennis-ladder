@@ -14,14 +14,19 @@ export interface Match {
   loserScore: number;
 }
 
-// Starting roster. Edit these to your group's names (or add players later in /admin).
+// Your starting roster: these players are ranked from day one; anyone added later in
+// /admin plays PLACEMENT_SETS sets first. Set NEXT_PUBLIC_LADDER_PLAYERS (comma-separated
+// names) in .env.local and in Vercel, so names stay out of the repo. `npm run setup` does it.
+const ROSTER = process.env.NEXT_PUBLIC_LADDER_PLAYERS || "Alex,Sam,Jordan,Taylor,Casey,Riley";
+
+export const playerId = (name: string) =>
+  name.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "player";
+
 export const INITIAL_PLAYERS: Player[] = [
-  { id: "alex", name: "Alex" },
-  { id: "sam", name: "Sam" },
-  { id: "jordan", name: "Jordan" },
-  { id: "taylor", name: "Taylor" },
-  { id: "casey", name: "Casey" },
-  { id: "riley", name: "Riley" },
+  ...new Map(
+    ROSTER.split(",").map((n) => n.trim().replace(/\s+/g, " ").slice(0, 20)).filter(Boolean)
+      .map((name) => [playerId(name), { id: playerId(name), name }] as const)
+  ).values(),
 ];
 
 export const PLAYERS_KEY = "tennis:players";

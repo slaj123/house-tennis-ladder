@@ -24,43 +24,33 @@ cd house-tennis-ladder
 npm install
 ```
 
-Create a file named `.env.local` in the project folder with one line:
+Then set up your group:
 
-```
-ADMIN_PASSCODE=pick-a-long-passcode
+```bash
+npm run setup
 ```
 
-Then start it:
+It asks who's in your group from the start, how many games win a set, and how many sets a newcomer plays before being ranked. It writes everything to `.env.local` (git-ignored), including a random local admin passcode. **Your friends' names never go into the code or the repo.** It also prints the same settings to paste into Vercel later.
 
 ```bash
 npm run dev
 ```
 
-Open http://localhost:3000. Without a database configured, the app saves to `.data/local-store.json` on your computer, so you can try everything first. Both `.env.local` and `.data/` are git-ignored.
+Open http://localhost:3000. Without a database, the app saves to `.data/local-store.json` on your computer (git-ignored), so you can try everything first. If you change the roster after trying it, delete that file so it reloads.
 
-## 2. Add your players
+**Set up with Claude Code:** open this folder in [Claude Code](https://claude.com/claude-code) and type `/setup`. It asks the same questions in conversation, applies them, and walks you through Vercel.
 
-Open `src/lib/types.ts` and replace the sample names in `INITIAL_PLAYERS`:
+## 2. Players later on
 
-```ts
-export const INITIAL_PLAYERS: Player[] = [
-  { id: "alex", name: "Alex" },
-  ...
-];
-```
-
-- `id` is permanent: lowercase letters, no spaces.
-- `name` is what shows on screen, and you can change it later in `/admin`.
-- These players are your "core" group and are ranked immediately. Players added later in `/admin` have to play 5 sets first.
-
-If you already ran the app locally, delete `.data/local-store.json` so it reloads the new roster.
+- **In the app:** `/admin` adds, renames or removes players and edits matches. People added there play the placement sets before they're ranked.
+- **The starting roster and rules** live in environment variables: `NEXT_PUBLIC_LADDER_PLAYERS`, `NEXT_PUBLIC_SET_LENGTH`, `NEXT_PUBLIC_PLACEMENT_SETS`. To change them, rerun `npm run setup` locally, or edit them in Vercel and redeploy.
 
 ## 3. Put it online
 
 1. Push your copy to GitHub.
 2. In Vercel, click **Add New → Project**, pick the repo, and click **Deploy**. The first deploy works but saves nothing yet.
 3. In the Vercel project, open **Storage → Create Database → Upstash for Redis** (free plan) and connect it to the project. Vercel adds the `KV_REST_API_URL` and `KV_REST_API_TOKEN` variables for you.
-4. In **Settings → Environment Variables**, add `ADMIN_PASSCODE` with a long passcode only you know.
+4. In **Settings → Environment Variables**, add `ADMIN_PASSCODE` (a long passcode only you know) and the three `NEXT_PUBLIC_` values `npm run setup` printed.
 5. Go to **Deployments**, open the latest one, and click **Redeploy** so it picks up the new variables.
 
 Share the URL with your group. On iPhone, open it in Safari, tap Share, then **Add to Home Screen** to use it like an app.
@@ -70,9 +60,10 @@ Share the URL with your group. On iPhone, open it in Safari, tap Share, then **A
 | What | Where | Default |
 | --- | --- | --- |
 | Starting rating | `STARTING_ELO` in `src/lib/stats.ts` | 1500 |
+| Starting roster | `NEXT_PUBLIC_LADDER_PLAYERS` | 6 sample names |
 | How fast ratings move | `ELO_K` in `src/lib/stats.ts` | 32 |
-| Sets before a newcomer is ranked | `PLACEMENT_SETS` in `src/lib/stats.ts` | 5 |
-| Games to win a set | `DEFAULT_TARGET` in `src/lib/scoring.ts` | 3 |
+| Sets before a newcomer is ranked | `NEXT_PUBLIC_PLACEMENT_SETS` | 5 |
+| Games to win a set | `NEXT_PUBLIC_SET_LENGTH` | 3 |
 
 ## Security notes
 

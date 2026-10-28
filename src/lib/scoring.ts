@@ -1,4 +1,5 @@
-export const DEFAULT_TARGET = 3;
+// Games to win a set by default (1-10). Set NEXT_PUBLIC_SET_LENGTH to change it; `npm run setup` asks.
+export const DEFAULT_TARGET = Math.min(10, Math.max(1, Math.round(Number(process.env.NEXT_PUBLIC_SET_LENGTH)) || 3));
 export const MIN_TARGET = 1;
 export const MAX_TARGET = 10;
 

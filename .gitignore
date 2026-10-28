@@ -42,3 +42,6 @@ next-env.d.ts
 
 # local test data (fallback store)
 /.data/
+
+# your setup answers (names)
+setup.json

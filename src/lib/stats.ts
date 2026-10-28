@@ -124,9 +124,9 @@ export interface EloMatchResult {
 }
 
 /** Sets a newcomer must play before their rating counts and is shown. */
-export const PLACEMENT_SETS = 5;
+export const PLACEMENT_SETS = Math.min(20, Math.max(1, Math.round(Number(process.env.NEXT_PUBLIC_PLACEMENT_SETS)) || 5));
 
-/** The founding roommates are ranked from day one; anyone added later must place in. */
+/** Your starting roster is ranked from day one; anyone added later must place in. */
 export function isCorePlayer(playerId: string): boolean {
   return CORE_PLAYER_IDS.has(playerId);
 }
